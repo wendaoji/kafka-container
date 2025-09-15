@@ -61,7 +61,6 @@ services:
     restart: unless-stopped
     ports:
       - "8083:8083"
-      - "5005:5005"
     volumes:
       - ./connectors:/opt/kafka/connectors
       - ./connect-standalone.properties:/opt/kafka/config/connect-standalone.properties
