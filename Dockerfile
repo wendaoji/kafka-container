@@ -40,7 +40,7 @@ COPY --from=parent /etc/kafka /etc/kafka
 RUN set -eux ; \
     mkdir -p /var/lib/kafka/data; \
     mkdir -p /usr/logs /mnt/shared/config; \
-    adduser -h /home/appuser -D --shell /bin/bash appuser; \
+    useradd -m -d /home/appuser -s /bin/bash appuser; \
     chown appuser:appuser -R /usr/logs /opt/kafka /mnt/shared/config; \
     chown appuser:root -R /var/lib/kafka /etc/kafka/secrets /etc/kafka; \
     chmod -R ug+w /etc/kafka /var/lib/kafka /etc/kafka/secrets;
