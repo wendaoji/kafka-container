@@ -17,7 +17,8 @@
 ###############################################################################
 
 # https://github.com/apache/kafka/blob/trunk/docker/docker_official_images/3.7.0/jvm/Dockerfile
-FROM apache/kafka:3.7.0 AS parent
+ARG VERSION=latest
+FROM apache/kafka:${VERSION} AS parent
 
 FROM eclipse-temurin:21-jre-noble
 
@@ -29,21 +30,21 @@ USER root
 ENV build_date 2025-9-15
 
 LABEL org.label-schema.name="kafka" \
-      org.label-schema.description="Apache Kafka" \
-      org.label-schema.build-date="${build_date}" \
-      org.label-schema.vcs-url="https://github.com/apache/kafka" \
-      maintainer="Apache Kafka"
+  org.label-schema.description="Apache Kafka" \
+  org.label-schema.build-date="${build_date}" \
+  org.label-schema.vcs-url="https://github.com/apache/kafka" \
+  maintainer="Apache Kafka"
 
 COPY --from=parent /opt/kafka /opt/kafka
 COPY --from=parent /etc/kafka /etc/kafka
 
 RUN set -eux ; \
-    mkdir -p /var/lib/kafka/data; \
-    mkdir -p /usr/logs /mnt/shared/config; \
-    useradd -m -d /home/appuser -s /bin/bash appuser; \
-    chown appuser:appuser -R /usr/logs /opt/kafka /mnt/shared/config; \
-    chown appuser:root -R /var/lib/kafka /etc/kafka/secrets /etc/kafka; \
-    chmod -R ug+w /etc/kafka /var/lib/kafka /etc/kafka/secrets;
+  mkdir -p /var/lib/kafka/data; \
+  mkdir -p /usr/logs /mnt/shared/config; \
+  useradd -m -d /home/appuser -s /bin/bash appuser; \
+  chown appuser:appuser -R /usr/logs /opt/kafka /mnt/shared/config; \
+  chown appuser:root -R /var/lib/kafka /etc/kafka/secrets /etc/kafka; \
+  chmod -R ug+w /etc/kafka /var/lib/kafka /etc/kafka/secrets;
 
 USER appuser
 
